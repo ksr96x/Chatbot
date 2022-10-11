@@ -1,0 +1,102 @@
+class Field():
+    def __init__(self):
+        self.matchfield = ["", 1, 2, 3, 
+                               4, 5, 6,     
+                               7, 8, 9]
+        
+
+    #def matchfield(self):
+        #[0] offen, damit leichter verständlich (1 = [1] ... 9 = [9])
+        #self.matchfield = ["", 1, 2, 3, 
+                              # 4, 5, 6,     
+                               #7, 8, 9]
+
+                            # Spielfeld:
+                            # [1, 2, 3
+                            #  4, 5, 6
+                            #  7, 8, 9]
+
+class PlayMechanics(Field):
+    def __init__(self, X, O):
+        super().__init__(self)
+        self.X = X
+        self.O = O
+
+   # def players(self, X, O):
+        #self.X = X
+        #self.O = O
+
+    def setChar(self, player, number : int):#Zug 
+        self.number = number
+        self.player = player
+
+        for self.number in self.matchfield:
+            if self.number == self.matchfield:
+                player = self.matchfield
+
+
+class WinConditions():
+    def __init__():
+        pass
+
+    def win(self):
+        #Kombinationen: 1,2,3; 4,5,6; 7,8,9; 1,4,7; 2,5,8; 3,6,9; 1,5,9; 3,5,7; // geht wahrscheinlich einfacher 
+        if "X"==Field.matchfield[1] and "X"==Field.matchfield[2] and "X"==Field.matchfield[3]:
+            print("WIN!")
+        elif "X"==Field.matchfield[4] and "X"==Field.matchfield[5] and "X"==Field.matchfield[6]:
+            print("WIN!")
+        elif "X"==Field.matchfield[7] and "X"==Field.matchfield[8] and "X"==Field.matchfield[9]:
+            print("WIN!")
+        elif "X"==Field.matchfield[1] and "X"==Field.matchfield[4] and "X"==Field.matchfield[7]:
+            print("WIN!")
+        elif "X"==Field.matchfield[2] and "X"==Field.matchfield[5] and "X"==Field.matchfield[8]:
+            print("WIN!")
+        elif "X"==Field.matchfield[3] and "X"==Field.matchfield[6] and "X"==Field.matchfield[9]:
+            print("WIN!")
+        elif "X"==Field.matchfield[1] and "X"==Field.matchfield[5] and "X"==Field.matchfield[9]:
+            print("WIN!")
+        elif "X"==Field.matchfield[3] and "X"==Field.matchfield[5] and "X"==Field.matchfield[7]:
+            print("WIN!")
+        elif "O"==Field.matchfield[1] and "O"==Field.matchfield[2] and "O"==Field.matchfield[3]:
+            print("WIN!")
+        elif "O"==Field.matchfield[4] and "O"==Field.matchfield[5] and "O"==Field.matchfield[6]:
+            print("WIN!")
+        elif "O"==Field.matchfield[7] and "O"==Field.matchfield[8] and "O"==Field.matchfield[9]:
+            print("WIN!")
+        elif "O"==Field.matchfield[1] and "O"==Field.matchfield[4] and "O"==Field.matchfield[7]:
+            print("WIN!")
+        elif "O"==Field.matchfield[2] and "O"==Field.matchfield[5] and "O"==Field.matchfield[8]:
+            print("WIN!")
+        elif "O"==Field.matchfield[3] and "O"==Field.matchfield[6] and "O"==Field.matchfield[9]:
+            print("WIN!")
+        elif "O"==Field.matchfield[1] and "O"==Field.matchfield[5] and "O"==Field.matchfield[9]:
+            print("WIN!")
+        elif "O"==Field.matchfield[3] and "O"==Field.matchfield[5] and "O"==Field.matchfield[7]:
+            print("WIN!")
+        else:
+            raise Exception("unknown win type")
+
+        self.gameWon : bool = True
+
+def runMainLoop():
+    while True:
+        player = input("Wähle X oder O: ").upper()
+
+        if player == "O":
+            player = PlayMechanics.O
+        elif player == "X":
+            player = PlayMechanics.X
+        else:
+            raise Exception("please enter valid symbol")
+
+        while WinConditions.gameWon == False:
+            turn = input("Wähle zwischen 1 - 9: ")
+            if turn.isdigit() and turn > 0 and turn < 10:
+                turn = PlayMechanics.setChar(turn) 
+                print(Field.matchfield)
+            else:
+                raise Exception("enter valid number")
+        break
+
+runMainLoop()
+
