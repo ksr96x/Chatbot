@@ -1,0 +1,56 @@
+from random import *
+
+class Item():
+    def __init__(self, bonusHealth, bonusDamage, bonusMana):
+        self.bonusHealth = bonusHealth
+        self.bonusDamage = bonusDamage
+        self.bonusMana = bonusMana 
+        self.itemName : str
+
+    def changeItemNameTag(self, newName : str):
+        self.itemName = newName
+
+class Weapon(Item):
+    def __init__(self, bonusHealth, bonusDamage, bonusMana):
+        super().__init__(self, bonusHealth, bonusDamage, bonusMana)
+
+class Clothing(Item):
+    def __init__(self, bonusHealth, bonusDamage, bonusMana, bonusArmor, bonusMr):
+        super().__init__(self, bonusHealth, bonusDamage, bonusMana)
+        self.bonusArmor = bonusArmor
+        self.bonusMr = bonusMr
+
+class Character():
+    def __init__(self, damage : int, armor : int, mr : int):
+        self.health = 100
+        self.mana = 200
+        self.damage = damage
+        self.armor = armor
+        self.mr = mr 
+
+    def attack(self, target, attackType):
+        critChance = randint(1, 10)
+        if attackType == "default":
+            manaUsage = randint(25, 30)
+            method = self.__calculateAttackDamageDefault 
+            self.__attack(target, critChance, method, manaUsage, critValue = 200, noCritValue = 100)
+
+        elif attackType == "weak":
+            manaUsage = randint(20, 25)
+            method = self.__calculateAttackDamageWeak
+            self.__attack(target, critChance, method, manaUsage, critValue = 2, noCritValue = 5)
+
+        else:
+            raise Exception("unvalid attack type")
+
+    def __attack(self, target, critChance : int, manaUsage : int, critValue, noCritValue, method):
+        if critChance < 10:
+            if target.armor > target.mr:
+                attackDamage = method(target.armor, noCritValue)
+
+
+    def __calculateAttackDamageDefault(self):
+        pass
+
+    def __calculateAttackDamageWeak(self):
+        pass
