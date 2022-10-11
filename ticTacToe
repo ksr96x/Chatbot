@@ -1,3 +1,5 @@
+from random import *
+
 class Field():
     def __init__(self):
         self.matchfield = ["", 1, 2, 3, 
@@ -22,21 +24,24 @@ class PlayMechanics(Field):
         self.X = X
         self.O = O
 
-   # def players(self, X, O):
+    #def players(self, X, O):
         #self.X = X
         #self.O = O
-
-    def setChar(self, player, number : int):#Zug 
+        
+    #Zug 
+    def setChar(self, player, number : int):
         self.number = number
         self.player = player
 
         for self.number in self.matchfield:
             if self.number == self.matchfield:
                 player = self.matchfield
+                
+
 
 
 class WinConditions():
-    def __init__():
+    def __init__(self):
         pass
 
     def win(self):
@@ -94,8 +99,11 @@ def runMainLoop():
             if turn.isdigit() and turn > 0 and turn < 10:
                 turn = PlayMechanics.setChar(turn) 
                 print(Field.matchfield)
+
+                enemyTurn = randint(Field.matchfield)
+                enemyTurn = PlayMechanics.setChar(enemyTurn)
             else:
-                raise Exception("enter valid number")
+                raise Exception("enter valid number")       
         break
 
 runMainLoop()
