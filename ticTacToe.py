@@ -24,11 +24,12 @@ class Field():
 
 #Superklasse Field weil das ja Grundlage für alles ist (war jedenfalls mein Gedanke)
 class PlayMechanics(Field):
-    def __init__(self):
-        super().__init__(self)
+    def __init__(self, player):
+        super().__init__()
+        self.player = player
          
     def printSymbol(self):
-        if self.player_X:
+        if self.player == "X":
             return "X"
         else:
             return "O"
@@ -45,16 +46,17 @@ class PlayMechanics(Field):
 
 class WinConditions(Field): #keine Ahnung was da zusätzlich initialisiert werden soll 
     def __init__(self):
-        super().__init__(self)
+        super().__init__()
 
     def win(self):
         #Kombinationen: 1,2,3; 4,5,6; 7,8,9; 1,4,7; 2,5,8; 3,6,9; 1,5,9; 3,5,7;  
         #geht wahrscheinlich einfacher 
-        #ich weiß, dass ich das ändern müsste, weil beim KI win jetzt auch win kommt, deswegen zeile 122
+        #ich weiß, dass ich das ändern müsste, weil beim KI win jetzt auch win kommt, deswegen zeile 123
         if "X"==self.matchfield[1] and "X"==self.matchfield[2] and "X"==self.matchfield[3]:
-            print("WIN!")
+            print("WIN!") 
         elif "X"==self.matchfield[4] and "X"==self.matchfield[5] and "X"==self.matchfield[6]:
             print("WIN!")
+            
         elif "X"==self.matchfield[7] and "X"==self.matchfield[8] and "X"==self.matchfield[9]:
             print("WIN!")
         elif "X"==self.matchfield[1] and "X"==self.matchfield[4] and "X"==self.matchfield[7]:
@@ -83,8 +85,7 @@ class WinConditions(Field): #keine Ahnung was da zusätzlich initialisiert werde
             print("WIN!")
         elif "O"==self.matchfield[3] and "O"==self.matchfield[5] and "O"==self.matchfield[7]:
             print("WIN!")
-        else:
-            raise Exception("Unknown win type")
+        
 
     def gameWonFalse(self):#einfach nur ne Methode um ne while loop zu nutzen, wird bei win() auf True gesetzt 
         self.gameWonFalse : bool == False
@@ -110,14 +111,14 @@ def runMainLoop():
             turn = int(turn)                       #ModuleNotFoundError: No module named '_curses', nachdem etwas automatisch importiert wird
             if turn > 0 and turn < 10:
                 turn = player.setChar(turn)  
-                print(Field.get_matchfield()) #Idee ist, dass das aktuelle Feld ausgegeben wird, keine Ahnung ob das klappt
-                if WinConditions.win(): #wenn win() eintritt, gameWonFalse == True, somit soll die while loop enden
+                print(player.matchfield) #Idee ist, dass das aktuelle Feld ausgegeben wird, keine Ahnung ob das klappt
+                if WinConditions.win(player): #wenn win() eintritt, gameWonFalse == True, somit soll die while loop enden
                     WinConditions.gameWonFalse == True
 
-                enemyTurn = random.choice(Field.matchfield) #eine Art KI die dann random einfach irgendwo das Gegenteilige Symbol setzt
+                enemyTurn = random.choice(enemy.matchfield) #eine Art KI die dann random einfach irgendwo das Gegenteilige Symbol setzt
                 enemyTurn = enemy.setChar(enemyTurn)
-                print(Field.get_matchfield())
-                if WinConditions.win():
+                print(enemy.matchfield)
+                if WinConditions.win(enemy):
                     WinConditions.gameWonFalse == True
                     print("(Enemy win)")
 
