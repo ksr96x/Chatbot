@@ -83,7 +83,6 @@ class Character():
                     #Beide else if fallen weg, da du genau das gleiche machst.
                     #attackDamage = self.calculateAttackDamage(target.mr, 100)
                     attackDamage = method(target.mr, noCritValue)
-                self.mana -= manaUsage
         else:
             print("CRITICAL HIT")
             #attackDamage = self.calculateAttackDamage(target.armor, 200)
