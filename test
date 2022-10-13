@@ -54,3 +54,16 @@ class Character():
 
     def __calculateAttackDamageWeak(self):
         pass
+
+
+test = [1,5,2,7,6,4]
+
+def main(number):
+    for i in range(len(test)):
+        if test[i]==number:
+            test[i] = 9
+    print(test)
+
+
+
+main(5)
