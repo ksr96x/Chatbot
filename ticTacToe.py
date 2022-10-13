@@ -24,35 +24,24 @@ class Field():
 
 #Superklasse Field weil das ja Grundlage für alles ist (war jedenfalls mein Gedanke)
 class PlayMechanics(Field):
-    def __init__(self, playerX, playerO):
+    def __init__(self):
         super().__init__(self)
-        self.playerX = playerX
-        self.playerO = playerO
-# an sich hätte ich das sogar leer gehabt, weil ich nicht wusste was da rein soll oder wo ich am besten die Spieler initalisiere
-# und instanziiere 
-    def get_playerX(self):
-        return "X"
+         
+    def printSymbol(self):
+        if self.player_X:
+            return "X"
+        else:
+            return "O"
 
-    def get_playerO(self):
-        return "O"    
+        
         
     #Zug: Wenn der Input in der Liste vorhanden ist, soll die Stelle[number] mit X oder O ersetzt werden
     def setChar(self, number : int):
-        self.number = number
-    
-        if self.playerX:
-            for number in self.matchfield:
-                if number == self.matchfield:
-                    self.get_playerX = self.matchfield[number]
         
-        elif self.playerO:            
-            for number in self.matchfield:
-                if number == self.matchfield:
-                    self.get_playerO = self.matchfield[number]
-
-        else:
-            raise Exception("Input not valid")
-
+        for number in self.matchfield:
+            if number == self.matchfield:
+                self.printSymbol = self.matchfield[number]
+      
 
 class WinConditions(Field): #keine Ahnung was da zusätzlich initialisiert werden soll 
     def __init__(self):
@@ -61,7 +50,7 @@ class WinConditions(Field): #keine Ahnung was da zusätzlich initialisiert werde
     def win(self):
         #Kombinationen: 1,2,3; 4,5,6; 7,8,9; 1,4,7; 2,5,8; 3,6,9; 1,5,9; 3,5,7;  
         #geht wahrscheinlich einfacher 
-        #ich weiß, dass ich das ändern müsste, weil beim KI win jetzt auch win kommt, deswegen zeile 121
+        #ich weiß, dass ich das ändern müsste, weil beim KI win jetzt auch win kommt, deswegen zeile 122
         if "X"==self.matchfield[1] and "X"==self.matchfield[2] and "X"==self.matchfield[3]:
             print("WIN!")
         elif "X"==self.matchfield[4] and "X"==self.matchfield[5] and "X"==self.matchfield[6]:
@@ -100,32 +89,37 @@ class WinConditions(Field): #keine Ahnung was da zusätzlich initialisiert werde
     def gameWonFalse(self):#einfach nur ne Methode um ne while loop zu nutzen, wird bei win() auf True gesetzt 
         self.gameWonFalse : bool == False
 
+player_X = PlayMechanics("X")
+player_O = PlayMechanics("O")
+
 def runMainLoop():
     while True:
         player = input("Choose X or O: ").upper()
-        #das mit dem player ist maximal geraten, weil ich da keinen Ansatz gefunden hab
+
         if player == "O":
-            player = PlayMechanics.get_playerO
+            player = player_O
+            enemy = player_X
         elif player == "X":
-            player = PlayMechanics.get_playerX
+            player = player_X
+            enemy = player_O
         else:
             raise Exception("Please enter valid symbol")
         
         while WinConditions.gameWonFalse:
-            turn = input("Choose between 1 - 9: ")
-            turn = int(turn)
+            turn = input("Choose between 1 - 9: ") #würde hier gerne turn.isdigit() implementieren, aber spuckt folgendes aus:
+            turn = int(turn)                       #ModuleNotFoundError: No module named '_curses', nachdem etwas automatisch importiert wird
             if turn > 0 and turn < 10:
-                turn = PlayMechanics.setChar(player, turn) #attributeError, krieg ich nicht gefixxt 
+                turn = player.setChar(turn)  
                 print(Field.get_matchfield()) #Idee ist, dass das aktuelle Feld ausgegeben wird, keine Ahnung ob das klappt
                 if WinConditions.win(): #wenn win() eintritt, gameWonFalse == True, somit soll die while loop enden
                     WinConditions.gameWonFalse == True
 
                 enemyTurn = random.choice(Field.matchfield) #eine Art KI die dann random einfach irgendwo das Gegenteilige Symbol setzt
-                enemyTurn = PlayMechanics.setChar(enemyTurn)
+                enemyTurn = enemy.setChar(enemyTurn)
                 print(Field.get_matchfield())
-                if WinConditions.win(): 
+                if WinConditions.win():
                     WinConditions.gameWonFalse == True
-                    print("(enemy win)")
+                    print("(Enemy win)")
 
             else:
                 raise Exception("Enter valid number")       
