@@ -1,0 +1,60 @@
+import nltk
+from nltk.chat.util import Chat, reflections
+import time
+
+class Chatbot():
+    def __init__(self):
+        self.pairs = [
+            [
+                r'Ich habe eine Frage zu (.*)',
+                ['Was möchten Sie speziell zu %1 wissen?']
+            ],
+            [
+                r'Wie kann ich mich bewerben?|bewerben|(.*) bewerben|bewerben (.*)',
+                ['Wenn Sie sich bewerben wollen, können Sie ganz einfach eine Email mit Lebenslauf an xxx senden']
+            ],
+            [
+                r'(.*) Telefonnummer',
+                ['Unsere Telefonnummer ist 123456789']
+            ],
+            [
+                r'(.*)',
+                ['Ich habe Ihre Eingabe leider nicht verstanden. Könnten Sie das bitte anders formulieren?']
+            ]
+        ]
+
+
+chatbot = Chat(Chatbot().pairs, reflections)
+bot_name = "Sam"
+
+def main():
+    #button = False
+    print(f'{bot_name}: Willkommen bei Firma xyz')
+    time.sleep(2)
+    print(f'{bot_name}: Um Hilfe zu bekommen, drücken Sie Start')
+    #button = True
+    
+    #if button:
+    print(f'{bot_name}: Wie darf ich Ihnen helfen?')
+    while True:
+        
+        question = str(input("Sie: ")).lower()
+
+        if question.lower() == "ende":
+            print(f'{bot_name}: Zögern Sie nicht, mich wieder zu kontaktieren!')
+            break
+
+
+        answer = chatbot.respond(question)
+        print(f'{bot_name}: {answer}')
+        time.sleep(2)
+        print(f'{bot_name}: Kann ich Ihnen sonst noch etwas beantworten?')
+        
+
+      
+            
+    #else:   
+    #    print("Falls Sie trotzdem Hilfe benötigen, zögern Sie nicht, den Chatbot zu starten!")
+
+
+main()
