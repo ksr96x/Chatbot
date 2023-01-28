@@ -134,6 +134,7 @@ var pairs = {
   ]
 }
 
+//searches in pairs if input is included | pairs = dic -> array -> dic -> array { [ { [ ] } ] }
 function getBotResponse(input){
   for (let i = 0; i < pairs.data.length; i++) {
     for (let j = 0; j < pairs.data[i].utterances.length; j++) {

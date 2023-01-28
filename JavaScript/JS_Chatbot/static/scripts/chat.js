@@ -1,6 +1,7 @@
 //collapsible
 var coll = document.getElementsByClassName("collapsible");
 
+//click to open chat
 for (let i = 0;i < coll.length; i++){
     coll[i].addEventListener("click", function(){
         this.classList.toggle("active");
@@ -15,7 +16,7 @@ for (let i = 0;i < coll.length; i++){
     });
 }
 
-
+//get time for first message
 function getTime(){
     let today = new Date();
     hours = today.getHours();
