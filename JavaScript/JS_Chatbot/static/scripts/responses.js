@@ -3,8 +3,10 @@ const { StemmerEn, StopwordsEn } = require('@nlpjs/lang-en');
 const stemmer = new StemmerEn();
 const stopwords = new StopwordsEn();
 
+var _ = require('underscore');
+
 stopwords.dictionary = {};
-stopwords.build(['is', 'your']);
+stopwords.build(['is', 'your', 'i', 'am', 'if']);
 
 var pairs = {
   "name": "Corpus",
@@ -146,9 +148,12 @@ function getBotResponse(input){
 
   let tokAndStem = stemmer.tokenizeAndStem(input);
   let final = stopwords.removeStopwords(tokAndStem)
+  console.log(final)
   for (let i = 0; i < pairs?.data.length; i++) {
     for (let j = 0; j < pairs.data[i].utterances.length; j++) {
-      let found = pairs.data[i].utterances[j].some(r=> final.includes(r) >= 0)
+      let arr = pairs.data[i].utterances[j].split()
+      let found = arr.some(r => final.includes(r));
+      //let found = _.some(pairs.data[i].utterances[j], final);
         if (found) {
            return pairs.data[i].answers[j];
         } 
@@ -159,8 +164,8 @@ function getBotResponse(input){
 
 
 const input = 'i am wondering if testing your developer is needed';
-console.log(stemmer.tokenizeAndStem(input));
-
+//console.log(stemmer.tokenizeAndStem(input));
+console.log(getBotResponse(input))
 
 //Deutsche Variante
 /*const { StemmerDe, StopwordsDe } = require('@nlpjs/lang-de');
