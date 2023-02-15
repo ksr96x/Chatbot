@@ -1,6 +1,10 @@
-const { NlpManager } = require('node-nlp');
-const manager = new NlpManager({ languages: ['de']});
+const { Stemmer } = require('@nlpjs/basic');
+const { StemmerEn, StopwordsEn } = require('@nlpjs/lang-en');
+const stemmer = new StemmerEn();
+const stopwords = new StopwordsEn();
 
+stopwords.dictionary = {};
+stopwords.build(['is', 'your']);
 
 var pairs = {
   "name": "Corpus",
@@ -134,11 +138,18 @@ var pairs = {
   ]
 }
 
+
+//normalize -> tokenize -> removeStopwords -> stem -> arrToObj
 //searches in pairs if input is included | pairs = dic -> array -> dic -> array { [ { [ ] } ] }
 function getBotResponse(input){
-  for (let i = 0; i < pairs.data.length; i++) {
+  if (input.length < 3) {return "Könnten Sie bitte eine längere Eingabe formulieren?";}
+
+  let tokAndStem = stemmer.tokenizeAndStem(input);
+  let final = stopwords.removeStopwords(tokAndStem)
+  for (let i = 0; i < pairs?.data.length; i++) {
     for (let j = 0; j < pairs.data[i].utterances.length; j++) {
-        if (pairs.data[i].utterances[j].includes(input)) {
+      let found = pairs.data[i].utterances[j].some(r=> final.includes(r) >= 0)
+        if (found) {
            return pairs.data[i].answers[j];
         } 
     }
@@ -146,3 +157,37 @@ function getBotResponse(input){
   return "Könnten Sie die Eingabe anders formulieren?"; 
 }
 
+
+const input = 'i am wondering if testing your developer is needed';
+console.log(stemmer.tokenizeAndStem(input));
+
+
+//Deutsche Variante
+/*const { StemmerDe, StopwordsDe } = require('@nlpjs/lang-de');
+const stemmer = new StemmerDe();
+const stopwords = new StopwordsDe();
+stopwords.dictionary = {};
+stopwords.build(['ich', 'ob', 'sie']);
+*/
+
+//stemmer.stopwords = new StopwordsDe();
+
+/*const input = 'ich würde gerne wissen ob sie einen tester oder entwickler benötigen und wer ihr entwickler ist';
+const result = stemmer.tokenizeAndStem(input);
+console.log(result);*/
+
+
+/* sentiment analysis
+const { Container } = require('@nlpjs/core');
+const { SentimentAnalyzer } = require('@nlpjs/sentiment');
+const { LangDe } = require('@nlpjs/lang-de');
+
+
+
+(async () => {
+const container = new Container();
+container.use(LangDe);
+const sentiment = new SentimentAnalyzer({ container });
+const result = await sentiment.process({ locale: 'de', text: 'Ich liebe Katzen'});
+console.log(result.sentiment);
+})();*/

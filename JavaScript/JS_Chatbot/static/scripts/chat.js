@@ -58,6 +58,7 @@ function getHardResponse(userText){
     document.getElementById("chat-bar-bottom").scrollIntoView(true);
 }
 
+
 function getResponse(){
     let userText = $("#textInput").val();
     
@@ -87,4 +88,7 @@ $("#textInput").on("keypress", function(e) {
       getResponse();
     }
   });
+
+
+
 
