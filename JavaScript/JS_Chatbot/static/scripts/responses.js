@@ -18,10 +18,7 @@ var pairs = {
         "advice"
       ],
       "answers": [
-        "I'll certainly try my best",
-        "Never too busy for you. Shall we chat?",
-        "Sure. I'd be happy to. What's up?",
-        "I'm glad to help. What can I do for you?"
+        "I'll certainly try my best"
       ]
     },
     {
@@ -42,8 +39,7 @@ var pairs = {
         "bye"
       ],
       "answers": [
-        "Till next time",
-        "see you soon!"
+        "Till next time"
       ]
     },
     {
@@ -54,8 +50,7 @@ var pairs = {
         "howdy"
       ],
       "answers": [
-        "Hey there!",
-        "Greetings!"
+        "Hey there!"
       ]
     },
     {
@@ -68,8 +63,7 @@ var pairs = {
         "just testing you"
       ],
       "answers": [
-        "I like being tested. It helps keep me sharp",
-        "I hope to pass your tests. Feel free to test me often"
+        "I like being tested. It helps keep me sharp"
       ]
     },
   ]
@@ -88,7 +82,7 @@ function getBotResponse(input){
       let arr = pairs.data[i].utterances[j].split()
       let found = arr.some((item) => final.includes(item));
       if (found) {
-        return pairs.data[i].answers[j];
+        return pairs.data[i].answers.toString();
       } 
     }
   }
