@@ -1,4 +1,3 @@
-const { Stemmer } = require('@nlpjs/basic');
 const { StemmerEn, StopwordsEn } = require('@nlpjs/lang-en');
 const stemmer = new StemmerEn();
 const stopwords = new StopwordsEn();
@@ -141,7 +140,7 @@ var pairs = {
 }
 
 
-//normalize -> tokenize -> removeStopwords -> stem -> arrToObj
+//normalize -> tokenize -> stem -> removeStopwords
 //searches in pairs if input is included | pairs = dic -> array -> dic -> array { [ { [ ] } ] }
 function getBotResponse(input){
   if (input.length < 3) {return "Könnten Sie bitte eine längere Eingabe formulieren?";}
@@ -153,7 +152,7 @@ function getBotResponse(input){
     for (let j = 0; j < pairs.data[i].utterances.length; j++) {
       let arr = pairs.data[i].utterances[j].split()
       let found = arr.some(r => final.includes(r));
-      //let found = _.some(pairs.data[i].utterances[j], final);
+      //let found = _.some(arr, final)
         if (found) {
            return pairs.data[i].answers[j];
         } 
