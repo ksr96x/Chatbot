@@ -39,7 +39,7 @@ function getTime(){
 
 // Gets the first message
 function firstBotMessage() {
-    let firstMessage = "Wie darf ich behilflich sein?"
+    let firstMessage = "Wie darf Ich behilflich sein?"
     document.getElementById("botStarterMessage").innerHTML = '<p class="botText"><span>' + firstMessage + '</span></p>';
 
     let time = getTime();
@@ -51,13 +51,14 @@ function firstBotMessage() {
 firstBotMessage();
 
 function getHardResponse(userText){
+    console.log(userText);
     let botResponse = getBotResponse(userText)
     let botHtml = '<p class="botText"><span>' + botResponse + '</span></p>';
     $("#chatbox").append(botHtml);
-
+    
+    console.log(botResponse);
     document.getElementById("chat-bar-bottom").scrollIntoView(true);
 }
-
 
 function getResponse(){
     let userText = $("#textInput").val();
@@ -88,7 +89,3 @@ $("#textInput").on("keypress", function(e) {
       getResponse();
     }
   });
-
-
-
-

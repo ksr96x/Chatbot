@@ -1,8 +1,6 @@
-const { StemmerEn, StopwordsEn } = require('@nlpjs/lang-en');
-const stemmer = new StemmerEn();
-const stopwords = new StopwordsEn();
-
-var _ = require('underscore');
+var { StemmerEn, StopwordsEn } = require('@nlpjs/lang-en');
+var stemmer = new StemmerEn();
+var stopwords = new StopwordsEn();
 
 stopwords.dictionary = {};
 stopwords.build(['is', 'your', 'i', 'am', 'if']);
@@ -15,12 +13,9 @@ var pairs = {
     {
       "intent": "agent.canyouhelp",
       "utterances": [
-        "can you help me now",
-        "I need you to do something for me",
-        "assist me",
-        "I need you to help me",
-        "can you assist me",
-        "you can help me"
+        "help",
+        "assist",
+        "advice"
       ],
       "answers": [
         "I'll certainly try my best",
@@ -32,53 +27,19 @@ var pairs = {
     {
       "intent": "agent.chatbot",
       "utterances": [
-        "are you a bot",
-        "are you a chatbot",
-        "you are a robot",
-        "are you a program",
-        "you are just a robot",
-        "you are just a chatbot"
+        "bot",
+        "chatbot",
+        "robot"
       ],
       "answers": [
         "Indeed I am. I'll be here whenever you need me"
       ]
     },
     {
-      "intent": "appraisal.good",
-      "utterances": [
-        "that's good",
-        "good to know",
-        "glad to hear that",
-        "really well",
-        "that's awesome thank you"
-      ],
-      "answers": [
-        "Agree!",
-        "Glad you think so"
-      ]
-    },
-    {
-      "intent": "appraisal.thankyou",
-      "utterances": [
-        "thank you",
-        "nice thank you",
-        "thanks buddy",
-        "cheers",
-        "alright thanks"
-      ],
-      "answers": [
-        "Anytime. That's what I'm here for",
-        "It's my pleasure to help"
-      ]
-    },
-    {
       "intent": "greetings.bye",
       "utterances": [
-        "goodbye for now",
-        "bye bye take care",
-        "okay see you later",
-        "bye for now",
-        "I must go"
+        "goodbye",
+        "bye"
       ],
       "answers": [
         "Till next time",
@@ -111,31 +72,6 @@ var pairs = {
         "I hope to pass your tests. Feel free to test me often"
       ]
     },
-    {
-      "intent": "user.needsadvice",
-      "utterances": [
-        "I need advice",
-        "I need some advice",
-        "can you give me some advice?",
-        "what should I do?"
-      ],
-      "answers": [
-        "I probably won't be able to give you the correct answer right away",
-        "I'm not sure I'll have the best answer, but I'll try"
-      ]
-    },
-    {
-      "intent": "None",
-      "utterances": [
-        "I need advice",
-        "I need some advice",
-        "can you give me some advice?",
-        "what should I do?"
-      ],
-      "answers": [
-        "Sorry, I don't understand"
-      ]
-    }
   ]
 }
 
@@ -144,24 +80,28 @@ var pairs = {
 function getBotResponse(input){
   if (input.length < 3) {return "Könnten Sie bitte eine längere Eingabe formulieren?";}
 
-  let tokAndStem = stemmer.tokenizeAndStem(input);
-  let final = stopwords.removeStopwords(tokAndStem)
+  let tokAndStem = stemmer?.tokenizeAndStem(input);
+  let final = stopwords?.removeStopwords(tokAndStem)
   console.log(final)
   for (let i = 0; i < pairs?.data.length; i++) {
     for (let j = 0; j < pairs.data[i].utterances.length; j++) {
       let arr = pairs.data[i].utterances[j].split()
-      let found = arr.some(r => final.includes(r));
-      //let found = _.some(arr, final)
-        if (found) {
-           return pairs.data[i].answers[j];
-        } 
+      let found = arr.some((item) => final.includes(item));
+      if (found) {
+        return pairs.data[i].answers[j];
+      } 
     }
   }
   return "Könnten Sie die Eingabe anders formulieren?"; 
 }
 
 const input = 'i am wondering if testing your developer is needed';
+const input2 = 'can you assist me';
 console.log(getBotResponse(input));
+console.log(getBotResponse(input2));
+
+
+
 
 //Deutsche Variante
 /*const { StemmerDe, StopwordsDe } = require('@nlpjs/lang-de');
