@@ -139,7 +139,6 @@ var pairs = {
   ]
 }
 
-
 //normalize -> tokenize -> stem -> removeStopwords
 //searches in pairs if input is included | pairs = dic -> array -> dic -> array { [ { [ ] } ] }
 function getBotResponse(input){
@@ -161,10 +160,8 @@ function getBotResponse(input){
   return "Könnten Sie die Eingabe anders formulieren?"; 
 }
 
-
 const input = 'i am wondering if testing your developer is needed';
-//console.log(stemmer.tokenizeAndStem(input));
-console.log(getBotResponse(input))
+console.log(getBotResponse(input));
 
 //Deutsche Variante
 /*const { StemmerDe, StopwordsDe } = require('@nlpjs/lang-de');
