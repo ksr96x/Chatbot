@@ -51,12 +51,13 @@ function firstBotMessage() {
 firstBotMessage();
 
 function getHardResponse(userText){
-    console.log(userText);
-    let botResponse = getBotResponse(userText)
+    userText = userText.trim();
+    console.log("userText: " + userText);
+    let botResponse = getBotResponse(userText);
     let botHtml = '<p class="botText"><span>' + botResponse + '</span></p>';
     $("#chatbox").append(botHtml);
     
-    console.log(botResponse);
+    console.log("botResponse: " + botResponse);
     document.getElementById("chat-bar-bottom").scrollIntoView(true);
 }
 
