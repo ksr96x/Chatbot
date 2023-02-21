@@ -1,4 +1,5 @@
 var { StemmerEn, StopwordsEn } = require('@nlpjs/lang-en');
+
 var stemmer = new StemmerEn();
 var stopwords = new StopwordsEn();
 
@@ -73,13 +74,13 @@ var pairs = {
 //searches in pairs if input is included | pairs = dic -> array -> dic -> array { [ { [ ] } ] }
 function getBotResponse(input){
   if (input.length < 3) {return "Könnten Sie bitte eine längere Eingabe formulieren?";}
-
+  
   let tokAndStem = stemmer?.tokenizeAndStem(input);
   let final = stopwords?.removeStopwords(tokAndStem)
   console.log(final)
   for (let i = 0; i < pairs?.data.length; i++) {
     for (let j = 0; j < pairs.data[i].utterances.length; j++) {
-      let arr = pairs.data[i].utterances[j].split()
+      let arr = pairs.data[i].utterances[j].split(' ');
       let found = arr.some((item) => final.includes(item));
       if (found) {
         return pairs.data[i].answers.toString();
@@ -89,10 +90,12 @@ function getBotResponse(input){
   return "Könnten Sie die Eingabe anders formulieren?"; 
 }
 
-const input = 'i am wondering if testing your developer is needed';
-const input2 = 'can you assist me';
+/*const input = 'i am wondering if testing your developer is needed';
+const input2 = 'CAN YOU ASSIST ME';
 console.log(getBotResponse(input));
 console.log(getBotResponse(input2));
+*/
+
 
 
 
