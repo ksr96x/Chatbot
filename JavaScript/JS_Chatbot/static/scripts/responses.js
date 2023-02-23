@@ -90,11 +90,11 @@ function getBotResponse(input){
   return "Könnten Sie die Eingabe anders formulieren?"; 
 }
 
-/*const input = 'i am wondering if testing your developer is needed';
-const input2 = 'CAN YOU ASSIST ME';
+const input = 'i am wondering if testing your developer is needed';
+const input2 = '     CAN YOU ASSIST ME';
 console.log(getBotResponse(input));
 console.log(getBotResponse(input2));
-*/
+
 
 
 
