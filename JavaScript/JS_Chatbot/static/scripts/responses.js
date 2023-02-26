@@ -73,7 +73,7 @@ var pairs = {
 //normalize -> tokenize -> stem -> removeStopwords
 //searches in pairs if input is included | pairs = dic -> array -> dic -> array { [ { [ ] } ] }
 function getBotResponse(input){
-  if (input.length < 3) {return "Könnten Sie bitte eine längere Eingabe formulieren?";}
+  if (input.length < 3) {return "Can you enter a longer message?";}
   
   let tokAndStem = stemmer?.tokenizeAndStem(input);
   let final = stopwords?.removeStopwords(tokAndStem)
@@ -87,7 +87,7 @@ function getBotResponse(input){
       } 
     }
   }
-  return "Könnten Sie die Eingabe anders formulieren?"; 
+  return "Could you change the input?"; 
 }
 
 const input = 'i am wondering if testing your developer is needed';
@@ -100,7 +100,7 @@ console.log(getBotResponse(input2));
 
 
 
-//Deutsche Variante
+//Deutsche Variante (German Version)
 /*const { StemmerDe, StopwordsDe } = require('@nlpjs/lang-de');
 const stemmer = new StemmerDe();
 const stopwords = new StopwordsDe();
