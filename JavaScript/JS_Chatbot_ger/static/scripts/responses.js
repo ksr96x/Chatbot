@@ -1,10 +1,16 @@
-var { StemmerEn, StopwordsEn } = require('@nlpjs/lang-en');
+//for german use nlpjsLangDe
+const { StemmerDe, StopwordsDe } = nlpjsLangDe
+var stemmer = new nlpjsLangDe.StemmerDe();
+var stopwords = new nlpjsLangDe.StopwordsDe();
 
+//for english use nlpjsLangEn
+/*const { StemmerEn, StopwordsEn } = nlpjsLangEn
 var stemmer = new StemmerEn();
 var stopwords = new StopwordsEn();
+*/
 
 stopwords.dictionary = {};
-stopwords.build(['is', 'your', 'i', 'am', 'if']);
+stopwords.build(['ist', 'dein', 'ich', 'bin', 'falls', 'das']);
 
 var pairs = {
   "name": "Corpus",
@@ -14,12 +20,11 @@ var pairs = {
     {
       "intent": "agent.canyouhelp",
       "utterances": [
-        "help",
-        "assist",
-        "advice"
+        "hilfe",
+        "beratung"
       ],
       "answers": [
-        "I'll certainly try my best"
+        "Ich werde Ihnen sehr gerne helfen."
       ]
     },
     {
@@ -30,28 +35,28 @@ var pairs = {
         "robot"
       ],
       "answers": [
-        "Indeed I am. I'll be here whenever you need me"
+        "In der Tat bin ich ein Roboter. Ich werde Ihnen helfen sobald Sie mich benötigen."
       ]
     },
     {
       "intent": "greetings.bye",
       "utterances": [
-        "goodbye",
-        "bye"
+        "tschüss",
+        "auf wiedersehen",
+        "ciao"
       ],
       "answers": [
-        "Till next time"
+        "Bis zum nächsten Mal."
       ]
     },
     {
       "intent": "greetings.hello",
       "utterances": [
-        "hello",
-        "hi",
-        "howdy"
+        "hallo",
+        "hi"
       ],
       "answers": [
-        "Hey there!"
+        "Hallo!"
       ]
     },
     {
@@ -60,11 +65,11 @@ var pairs = {
         "test",
         "testing",
         "testing chatbot",
-        "this is a test",
-        "just testing you"
+        "das ist ein test",
+        "ich teste dich einfach nur"
       ],
       "answers": [
-        "I like being tested. It helps keep me sharp"
+        "Ich mag es getestet zu werden."
       ]
     },
   ]
@@ -87,17 +92,17 @@ function getBotResponse(input){
       } 
     }
   }
-  return "Könnten Sie die Eingabe neu formulieren?"; 
+  return "Könnten Sie die Eingabe anders formulieren?"; 
 }
 
-const input = 'i am wondering if testing your developer is needed';
+/*const input = 'i am wondering if testing your developer is needed';
 const input2 = '     CAN YOU ASSIST ME';
 console.log(getBotResponse(input));
 console.log(getBotResponse(input2));
+*/
 
 
-
-
+// window.getBotResponse = getBotResponse;
 
 
 //Deutsche Variante (German Version)

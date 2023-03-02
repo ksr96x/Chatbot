@@ -1,5 +1,4 @@
-var { StemmerEn, StopwordsEn } = require('@nlpjs/lang-en');
-
+//const { StemmerEn, StopwordsEn } = require('@nlpjs/lang-en');
 var stemmer = new StemmerEn();
 var stopwords = new StopwordsEn();
 
@@ -73,7 +72,7 @@ var pairs = {
 //normalize -> tokenize -> stem -> removeStopwords
 //searches in pairs if input is included | pairs = dic -> array -> dic -> array { [ { [ ] } ] }
 function getBotResponse(input){
-  if (input.length < 3) {return "Könnten Sie eine längere Eingabe tätigen?";}
+  if (input.length < 3) {return "Can you enter a longer message?";}
   
   let tokAndStem = stemmer?.tokenizeAndStem(input);
   let final = stopwords?.removeStopwords(tokAndStem)
@@ -87,7 +86,7 @@ function getBotResponse(input){
       } 
     }
   }
-  return "Könnten Sie die Eingabe neu formulieren?"; 
+  return "Could you change the input?"; 
 }
 
 const input = 'i am wondering if testing your developer is needed';
@@ -97,7 +96,7 @@ console.log(getBotResponse(input2));
 
 
 
-
+// window.getBotResponse = getBotResponse;
 
 
 //Deutsche Variante (German Version)
