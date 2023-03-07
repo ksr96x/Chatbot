@@ -134,10 +134,10 @@ var pairs = {
 function hyperlink(text, website){
   let course = website;
 
-  let link = `<a href='${course}'>${course}</a>`;
-
+  let link = `<a href='${course}' target='_blank'>${course}</a>`;
+  
   responseText = `${text} ${link}`;
-
+  
   return responseText;
 }
 //normalize -> tokenize -> stem -> removeStopwords
