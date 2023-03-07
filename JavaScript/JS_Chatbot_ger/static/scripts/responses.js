@@ -140,6 +140,8 @@ function hyperlink(text, website){
   
   return responseText;
 }
+
+
 //normalize -> tokenize -> stem -> removeStopwords
 //searches in pairs if input is included | pairs = dic -> array -> dic -> array { [ { [ ] } ] }
 function getBotResponse(input){
