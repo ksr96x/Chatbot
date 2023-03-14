@@ -1,14 +1,6 @@
-//for german use nlpjsLangDe
 const { StemmerDe, StopwordsDe } = nlpjsLangDe
 var stemmer = new nlpjsLangDe.StemmerDe();
 var stopwords = new nlpjsLangDe.StopwordsDe();
-
-//for english use nlpjsLangEn
-/*const { StemmerEn, StopwordsEn } = nlpjsLangEn
-var stemmer = new StemmerEn();
-var stopwords = new StopwordsEn();
-*/
-
 
 stopwords.dictionary = {};
 stopwords.build(["a","ab","aber","ach","acht","achte","achten","achter","achtes","ag","alle","allein","allem","allen","aller",
@@ -65,10 +57,16 @@ var pairs = {
         "hilfe",
         "beratung",
         "steuerberatung",
-        "steuererklärung",
         "steuererklärung machen",
         "wie sind die öffnungszeiten"
       ],
+      "synonyms": [
+        ["assistenz", "hilfeleistung", "unterstützung"],
+        ["rat", "beratungsgespräch", "konsultation"],
+        ["steuerberater", "steuerexperte", "fachkraft für steuern"],
+        ["steuerformular", "jahresabschluss", "steuerliche erklärung"],
+        ["geschäftszeiten", "arbeitszeiten"]
+    ],
       "answers": [
         "Ich werde Ihnen sehr gerne helfen."
       ]
@@ -80,8 +78,21 @@ var pairs = {
         "chatbot",
         "robot"
       ],
+      "synonyms": [],
       "answers": [
         "In der Tat bin ich ein Roboter. Ich werde Ihnen helfen sobald Sie mich benötigen."
+      ]
+    },
+    {
+      "intent": "agent.status",
+      "utterances": [
+        "wie gehts?",
+        "wie gehts dir?",
+        "wie gehts denn so?"
+      ],
+      "synonyms": [],
+      "answers": [
+        "Gut und Ihnen?"
       ]
     },
     {
@@ -91,6 +102,7 @@ var pairs = {
         "auf wiedersehen",
         "ciao"
       ],
+      "synonyms": [],
       "answers": [
         "Bis zum nächsten Mal."
       ]
@@ -101,6 +113,7 @@ var pairs = {
         "hallo",
         "hi"
       ],
+      "synonyms": [],
       "answers": [
         "Hallo!"
       ]
@@ -110,10 +123,10 @@ var pairs = {
       "utterances": [
         "test",
         "testing",
-        "testing chatbot",
         "das ist ein test",
         "ich teste dich einfach nur"
       ],
+      "synonyms": [],
       "answers": [
         "Ich mag es getestet zu werden."
       ]
@@ -121,8 +134,11 @@ var pairs = {
     {
       "intent": "user.link",
       "utterances": [
-        "website"
+        "testing chatbot",
+        "website",
+        "steuererklärung erstellen"
       ],
+      "synonyms": [],
       "answers": [
         hyperlink("Besuchen Sie dazu: ", "https://www.google.com")
       ]
@@ -141,6 +157,44 @@ function hyperlink(text, website){
   return responseText;
 }
 
+/*var arraysMatch = function (arr1, arr2) {
+	if (arr1.length !== arr2.length) return false;
+
+  arr1.sort();
+  arr2.sort();
+	
+	for (var i = 0; i < arr1.length; i++) {
+		if (arr1[i] !== arr2[i]) return false;
+	}
+
+	return true;
+
+};*/
+
+function arraysMatch(arr1, arr2) {
+  if (arr1.length !== arr2.length) return false;
+
+  const sortedArr1 = arr1.slice().sort();
+  const sortedArr2 = arr2.slice().sort();
+
+  for (let i = 0; i < sortedArr1.length; i++) {
+      if (sortedArr1[i] !== sortedArr2[i]) return false;
+  }
+
+  return true;
+}
+
+function score(arr1, arr2) {
+  let matchedWords = 0;
+  for (let i = 0; i < arr2.length; i++) {
+    if (arr1.includes(arr2[i])) {
+      matchedWords++;
+    }
+  }
+  let score = matchedWords / arr2.length;
+  console.log(score);
+  return score;
+}
 
 //normalize -> tokenize -> stem -> removeStopwords
 //searches in pairs if input is included | pairs = dic -> array -> dic -> array { [ { [ ] } ] }
@@ -153,11 +207,19 @@ function getBotResponse(input){
   for (let i = 0; i < pairs?.data.length; i++) {
     for (let j = 0; j < pairs.data[i].utterances.length; j++) {
       let arr = stemmer.stem(pairs.data[i].utterances[j].split(' '));
-      let found = arr.some((item) => final.includes(item));
-      if (found) {
-        return pairs.data[i].answers.toString();
-      } 
+      var found = arr.some((item) => final.includes(item));
+      var score_value = score(arr, final);
+      
+      if (arraysMatch(arr, final)) return pairs.data[i].answers.toString();
+      
     }
+    console.log(score_value);
+
+    if (score_value > 0.6) return pairs.data[i].answers.toString()
+
+    else if (found) return pairs.data[i].answers.toString();
+
+     
   }
   return "Könnten Sie die Eingabe anders formulieren?"; 
 }

@@ -1,6 +1,9 @@
 {
   "dependencies": {
     "@nlpjs/basic": "^4.26.1",
+    "all-the-german-words": "^1.1.0",
+    "all-the-german-words-ascii": "^1.0.0",
+    "gramma": "^1.6.0",
     "natural": "^6.2.0",
     "node-nlp": "^4.26.1",
     "stopwords-de": "^0.3.0",
