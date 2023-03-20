@@ -46,7 +46,7 @@ stopwords.build(["a","ab","aber","ach","acht","achte","achten","achter","achtes"
 "zu","zuerst","zugleich","zum","zunächst","zur","zurück","zusammen","zwanzig","zwar","zwei","zweite","zweiten","zweiter",
 "zweites","zwischen","zwölf","über","überhaupt","übrigens"]);
 
-var pairs = {
+const pairs = {
   "name": "Corpus",
   "locale": "de-DE",
   "data": [
@@ -54,17 +54,11 @@ var pairs = {
     {
       "intent": "agent.canyouhelp",
       "utterances": [
-        "steuerberatung",
-        "hilfe",
-        "steuererklärung machen",
-        "öffnungszeiten"
+        ["steuerberatung", "steuerberater", "steuerexperte", "fachkraft für steuern"],
+        ["hilfe","assistenz", "hilfeleistung", "unterstützung"],
+        ["steuererklärung machen", "steuerformular", "jahresabschluss", "steuerliche erklärung"],
+        ["öffnungszeiten", "geschäftszeiten", "arbeitszeiten"]
       ],
-      "synonyms": [
-        ["steuerberater", "steuerexperte", "fachkraft für steuern"],
-        ["assistenz", "hilfeleistung", "unterstützung"],
-        ["steuerformular", "jahresabschluss", "steuerliche erklärung"],
-        ["geschäftszeiten", "arbeitszeiten"]
-    ],
       "answers": [
         "Ich werde Ihnen sehr gerne helfen."
       ]
@@ -72,13 +66,9 @@ var pairs = {
     {
       "intent": "agent.chatbot",
       "utterances": [
-        "bot",
-        "chatbot",
-        "robot"
-      ],
-      "synonyms": [
-        ["Intelligenz"],
-        ["Nachrichtenroboter"]
+        ["bot", "intelligenz", "denkvermögen"],
+        ["chatbot", "nachrichtenroboter", "Informationshelfer"],
+        ["robot"]
       ],
       "answers": [
         "In der Tat bin ich ein Roboter. Ich werde Ihnen helfen sobald Sie mich benötigen."
@@ -87,11 +77,10 @@ var pairs = {
     {
       "intent": "agent.status",
       "utterances": [
-        "wie gehts?",
-        "wie gehts dir?",
-        "wie gehts denn so?"
+        ["wie gehts?"],
+        ["wie gehts dir?"],
+        ["wie gehts denn so?"]
       ],
-      "synonyms": [],
       "answers": [
         "Gut und Ihnen?"
       ]
@@ -99,11 +88,10 @@ var pairs = {
     {
       "intent": "greetings.bye",
       "utterances": [
-        "tschüss",
-        "auf wiedersehen",
-        "ciao"
+        ["tschüss"],
+        ["auf wiedersehen"],
+        ["ciao"]
       ],
-      "synonyms": [],
       "answers": [
         "Bis zum nächsten Mal."
       ]
@@ -111,10 +99,9 @@ var pairs = {
     {
       "intent": "greetings.hello",
       "utterances": [
-        "hallo",
-        "hi"
+        ["hallo"],
+        ["hi"]
       ],
-      "synonyms": [],
       "answers": [
         "Hallo!"
       ]
@@ -122,12 +109,11 @@ var pairs = {
     {
       "intent": "user.testing",
       "utterances": [
-        "test",
-        "testing",
-        "das ist ein test",
-        "ich teste dich einfach nur"
+        ["test"],
+        ["testing"],
+        ["das ist ein test"],
+        ["ich teste dich einfach nur"]
       ],
-      "synonyms": [],
       "answers": [
         "Ich mag es getestet zu werden."
       ]
@@ -135,13 +121,21 @@ var pairs = {
     {
       "intent": "user.link",
       "utterances": [
-        "testing chatbot",
-        "website",
-        "steuererklärung lesen"
+        ["testing chatbot"],
+        ["website"],
+        ["steuererklärung lesen"]
       ],
-      "synonyms": [],
       "answers": [
         hyperlink("Besuchen Sie dazu: ", "https://www.google.com")
+      ]
+    },
+    {
+      "intent":"random.random",
+      "utterances":[
+        ["kartoffelsalat", "pizza", "bayern münchen"]
+      ],
+      "answers":[
+        "Die Öffnungszeiten sind wie folgt:<br>Montags: 08 Uhr - 12 Uhr<br>Dienstag: 08 Uhr - 13 Uhr"
       ]
     },
   ]
@@ -174,18 +168,6 @@ function arraysMatch(arr1, arr2) {
   return true;
 }
 
-/*function arraysMatch(arr1, arr2) {
-	if (arr1.length !== arr2.length) return false;
-
-  let sortedArr1 = arr1.sort();
-  let sortedArr2 = arr2.sort();
-	
-	for (let i = 0; i < sortedArr1.length; i++) {
-		if (sortedArr1[i] !== sortedArr2[i]) return false;
-	}
-
-	return true;
-}*/
 
 function score(arr1, arr2) {
   let matchedWords = 0;
@@ -199,67 +181,30 @@ function score(arr1, arr2) {
   return score;
 }
 
-//normalize -> tokenize -> stem -> removeStopwords
-//searches in pairs if input is included | pairs = dic -> array -> dic -> array { [ { [ ] } ] }
-// Problem, dass Redundanzen nicht richtig unterschieden werden
-/*function getBotResponse(input){
-  if (input.length < 3) {return "Bitte tätigen sie eine längere Eingabe."}
-  
-  let tokAndStem = stemmer?.tokenizeAndStem(input);
-  let final = stopwords?.removeStopwords(tokAndStem); 
-  console.log("stemmed: "+final)
-  for (let i = 0; i < pairs?.data.length; i++) {
-    for (let j = 0; j < pairs.data[i].utterances.length; j++) {
-      let arr = stemmer.stem(pairs.data[i].utterances[j].split(' '));
-      console.log("utterance: "+arr);
-      let synonyms = pairs.data[i].synonyms;
-      let match = arraysMatch(arr, final);
-      var found = arr.some((item) => final.includes(item));
-      var score_value = score(arr, final);
-      var answers = pairs.data[i].answers;
-    
-      if (match) {
-        console.log("check");
-        return answers.toString();
-      }
-      
-
-      for (let k = 0; k < synonyms.length; k++) {
-        let synonymArr = stemmer.stem(synonyms[k]);
-        if (arraysMatch(synonymArr, final)) {
-          return answers.toString();
-        }
-        if (score(synonymArr, final) > 0.6 || synonymArr.some((item) => final.includes(item))) {
-          return answers.toString();
-        }
-      }   
-      if (score_value > 0.6 || found) return answers.toString();
-    }
-  }
-  
-  return "Entschuldigung, ich habe Sie nicht verstanden."; 
-}*/
-
 
 function getBotResponse(input) {
   if (input.length < 3) { return "Bitte tätigen sie eine längere Eingabe." }
 
-  let tokAndStem = stemmer.tokenizeAndStem(input);
-  let final = stopwords.removeStopwords(tokAndStem);
+  const final = stopwords.removeStopwords(stemmer.tokenizeAndStem(input));
+  if (final.length < 1) return "Bitte überarbeiten Sie Ihre Eingabe.";
+  
   console.log("stemmed: " + final)
 
   let matchedPairs = [];
 
   for (let i = 0; i < pairs.data.length; i++) {
-    let synonyms = pairs.data[i].synonyms.flat();
-    let searchList = pairs.data[i].utterances.concat(synonyms);
+    let searchList = pairs.data[i].utterances.flat();
+
     for (let j = 0; j < searchList.length; j++) {
       let arr = stemmer.stem(searchList[j].split(' '));
       console.log("search: " + searchList[j]);
       console.log("stemmed: " + arr);
       let match = arraysMatch(arr, final);
-      if (match) {
-        matchedPairs.push({ pair: pairs.data[i], score: score(arr, final) });
+      let sc = score(arr, final);
+      let found = arr.some(word => final.includes(word));
+
+      if (match || sc > 0.6 || found) {
+        matchedPairs.push({ pair: pairs.data[i], score: sc });
         break;
       }
     }
